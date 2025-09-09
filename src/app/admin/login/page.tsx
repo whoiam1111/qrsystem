@@ -1,4 +1,5 @@
 'use client';
+
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -16,7 +17,7 @@ export default function AdminLoginPage() {
         });
 
         if (res?.error) {
-            alert('로그인 실패');
+            alert('로그인 실패: ' + res.error);
         } else {
             router.push('/admin');
         }
