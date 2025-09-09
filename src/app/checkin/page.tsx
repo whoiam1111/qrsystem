@@ -52,7 +52,7 @@ export default function CheckInPage() {
                 onClick={submit}
                 className="px-8 py-4 bg-blue-600 text-white text-2xl font-semibold rounded hover:bg-blue-700"
             >
-                제출
+                제 출
             </button>
             <div className="mt-6 text-3xl font-bold text-center text-green-700">{status}</div>
         </main>
