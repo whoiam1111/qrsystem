@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { Pool } from 'pg';
 
 // --------------------
-// 글로벌 타입 확장 (TS7017 오류 방지)
+// 글로벌 Pool 타입 확장
 // --------------------
 declare global {
     // eslint-disable-next-line no-var
@@ -11,17 +11,16 @@ declare global {
 }
 
 // --------------------
-// Vercel Serverless 환경에서 Pool 재사용
+// Vercel Serverless 환경용 Pool 재사용
 // --------------------
-const pool =
-    global.pgPool ||
+const pool: Pool =
+    global.pgPool ??
     new Pool({
         connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }, // 배포 시 SSL 필요
     });
 
-if (!global.pgPool) {
-    global.pgPool = pool;
-}
+if (!global.pgPool) global.pgPool = pool;
 
 // --------------------
 // NextAuth 설정
@@ -36,8 +35,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials.password) return null;
-                console.log('credentials:', credentials);
-                console.log('DATABASE_URL:', process.env.DATABASE_URL);
+
                 try {
                     const client = await pool.connect();
                     try {
