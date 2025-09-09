@@ -1,6 +1,4 @@
 'use client';
-
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -10,16 +8,20 @@ export default function AdminLoginPage() {
     const router = useRouter();
 
     const handleLogin = async () => {
-        const res = await signIn('credentials', {
-            email,
-            password,
-            redirect: false,
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include', // 쿠키 전송
         });
 
-        if (res?.error) {
-            alert('로그인 실패: ' + res.error);
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+            router.push('/');
+            console.log('무냐');
         } else {
-            router.push('/admin');
+            alert('로그인 실패: ' + data.error);
         }
     };
 

@@ -1,16 +1,9 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import jwt from 'jsonwebtoken';
 
-export async function requireAdmin() {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
-        throw new Error('Unauthorized');
+export function verifyJWT(token: string) {
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+    } catch (err) {
+        return null;
     }
-
-    const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map((s) => s.trim());
-    if (!adminEmails.includes(session.user.email)) {
-        throw new Error('Unauthorized');
-    }
-
-    return session;
 }
