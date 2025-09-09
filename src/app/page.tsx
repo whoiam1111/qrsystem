@@ -7,9 +7,9 @@ export default function HomePage() {
                 <a href="/admin" className="px-4 py-2 bg-blue-600 text-white rounded">
                     관리자 페이지
                 </a>
-                <a href="/checkin" className="px-4 py-2 bg-green-600 text-white rounded">
+                {/* <a href="/checkin" className="px-4 py-2 bg-green-600 text-white rounded">
                     출석 페이지
-                </a>
+                </a> */}
             </div>
         </main>
     );
