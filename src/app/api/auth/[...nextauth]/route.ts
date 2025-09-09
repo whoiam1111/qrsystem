@@ -36,7 +36,8 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials.password) return null;
-
+                console.log('credentials:', credentials);
+                console.log('DATABASE_URL:', process.env.DATABASE_URL);
                 try {
                     const client = await pool.connect();
                     try {
